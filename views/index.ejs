@@ -1,0 +1,25 @@
+<%- include('./common/header') %>
+    <div id="map"></div>
+    <% var locationsString=JSON.stringify(locations); %>
+<%- include('./common/footer') %>
+
+<script>
+    var locations = JSON.parse('<%- locationsString %>');
+    var map = L.map('map').setView([11.0827, 80.2707], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    locations.forEach(function (lc) {
+        L.marker([lc.m_latitude, lc.m_longitude])
+            .addTo(map)
+            .bindPopup(`
+            <div style="padding: 10px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <h4 style="margin: 0; color: #333;">State: <b>${lc.state}</b></h4>
+                <h5 style="margin: 0; color: #555;">District: <b>${lc.district_name}</b></h5>
+            </div>
+        `);
+    });
+
+</script>
